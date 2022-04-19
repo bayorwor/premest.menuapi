@@ -28,6 +28,37 @@ const createUser = async (req, res) => {
   }
 };
 
+//login a user
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  const valid = await validate({ email, password });
+  if (valid) {
+    const user = await User.findOne({ email });
+    if (user) {
+      const isMatch = await bcrypt.compare(valid.password, user.password);
+      if (isMatch) {
+        res.status(200).json({
+          message: "User logged in successfully",
+          user,
+        });
+      } else {
+        res.status(400).json({
+          message: "Invalid credentials",
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Invalid credentials",
+      });
+    }
+  } else {
+    res.status(400).json({
+      message: "Invalid data",
+    });
+  }
+};
+
 module.exports = {
   createUser,
+  loginUser,
 };
