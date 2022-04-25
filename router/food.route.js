@@ -1,16 +1,19 @@
 const {
-  create,
-  findAll,
+  create: createFood,
+  findAll: getMenu,
   findOne,
   delete: deleteFood,
 } = require("../controllers/food.controller");
+const { protect } = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
 
-router
-  .post("/", create)
-  .get("/", findAll)
-  .get("/:foodId", findOne)
-  .delete("/:foodId", deleteFood);
+router.route("/").post(protect, createFood).get(protect, getMenu);
+
+// router
+//   .post("/",protect, create)
+//   .get("/",protect, findAll)
+//   .get("/:foodId",pro findOne)
+//   .delete("/:foodId", deleteFood);
 
 module.exports = router;
