@@ -54,7 +54,7 @@ async function loginUser(req, res) {
       }
     } else {
       res.status(401).json({
-        message: "Invalid email",
+        message: "Invalid  email",
       });
     }
   } catch {
