@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use("/api/foods", foodRouter);
-app.use("/api", userRouter);
+app.use("/api/users", userRouter);
 
 app.get("/", (req, res) => {
   res.sendFile("/views/index.html");
