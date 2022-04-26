@@ -18,7 +18,7 @@ app.use("/api/foods", foodRouter);
 app.use("/api/users", userRouter);
 
 app.get("/", (req, res) => {
-  res.sendFile("/views/index.html");
+  res.sendFile("index.html", { root: __dirname });
 });
 
 app.listen(PORT, () => {
