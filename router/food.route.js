@@ -4,11 +4,11 @@ const {
   findOne,
   delete: deleteFood,
 } = require("../controllers/food.controller");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect, admin } = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
 
-router.route("/").post(protect, createFood).get(protect, getMenu);
+router.route("/").post(protect, admin, createFood).get(protect, getMenu);
 
 // router
 //   .post("/",protect, create)

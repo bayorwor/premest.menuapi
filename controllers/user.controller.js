@@ -32,35 +32,67 @@ const createUser = async (req, res) => {
   }
 };
 
-//login a user
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-  const valid = await validate({ email, password });
-  if (valid) {
+//auth a user
+async function loginUser(req, res) {
+  try {
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     if (user) {
-      const isMatch = await bcrypt.compare(valid.password, user.password);
+      const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
         res.status(200).json({
-          message: "User logged in successfully",
-          user,
+          username: user.username,
+          email: user.email,
+          id: user._id,
+          token: generateToken(user._id),
         });
       } else {
-        res.status(400).json({
-          message: "Invalid credentials",
+        res.status(401).json({
+          message: "Invalid password",
         });
       }
     } else {
-      res.status(400).json({
-        message: "Invalid credentials",
+      res.status(401).json({
+        message: "Invalid email",
       });
     }
-  } else {
+  } catch {
     res.status(400).json({
-      message: "Invalid data",
+      message: "User not found",
     });
   }
-};
+}
+
+//login a user
+// const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+//   const valid = await validate({ email, password });
+//   if (valid) {
+//     const user = await User.findOne({ email });
+//     if (user) {
+//       const isMatch = await bcrypt.compare(valid.password, user.password);
+//       if (isMatch) {
+//         res.status(200).json({
+//           message: "User logged in successfully",
+//           user,
+//         });
+//       } else {
+//         res.status(400).json({
+//           message: "Invalid credentials",
+//         });
+//       }
+//     } else {
+//       res.status(400).json({
+//         message: "Invalid credentials",
+//       });
+//     }
+//   } else {
+//     res.status(400).json({
+//       message: "Invalid data",
+//     });
+//   }
+// };
 
 module.exports = {
   createUser,
